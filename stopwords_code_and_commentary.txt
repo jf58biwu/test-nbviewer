@@ -1,0 +1,34 @@
+from collections import Counter
+from glob import iglob
+import re
+import os
+
+def remove_garbage(text):
+    """Replace non-word (non-alphanumeric) chars in text with spaces,
+       then convert and return a lowercase version of the result.
+    """
+    text = re.sub(r'\W+', ' ', text)
+    text = text.lower()
+    return text
+
+topwords = 500
+folderpath = "C:\\Users\\Ammar Nammur\\Desktop\\University of Leipzig\\Digital Humanities\\Dream All Texts Plain\\Dream All Texts Plain"
+outputfile = 'C:\\Users\\Ammar Nammur\\Desktop\\University of Leipzig\\Digital Humanities\\Stop Words List.txt'
+counter = Counter()
+for filepath in iglob(os.path.join(folderpath, '*.txt')):
+    print (filepath)
+    with open(filepath) as file:
+        try:
+            counter.update(remove_garbage(file.read()).split())
+        except Exception as error:
+            print (error) 
+
+with open (outputfile,"w") as file:
+    for word, count in counter.most_common(topwords):
+        file.write('{} : {}\n'.format(word, count))
+               ----------------------------------------------------------------------------------------------
+we use:
+Regular expression to remove garbage 
+Counter for counting term frequency 
+Iglob() function in the glob module, we can get a list of files, so we open multiple files at the same time
+Stopwords here is a variable and its value is 500
